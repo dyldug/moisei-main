@@ -1,0 +1,35 @@
+body {
+  background: beige;
+  font-family: "Smooch Sans", system-ui, sans-serif;
+}
+@font-face {
+  font-family: "Smooch Sans";
+  src: url("../fonts/SmoochSans-VariableFont_wght.woff2") format("woff2");
+  font-weight: 550;
+  font-style: normal;
+  font-display: swap;
+}
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  background: rgba(245, 243, 238, 0.75); /* semi-transparent */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.header-inner {
+  height: 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: relative;
+}
