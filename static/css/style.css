@@ -1,35 +1,91 @@
-body {
-  background: beige;
-  font-family: "Smooch Sans", system-ui, sans-serif;
+/* ===== Base ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
+
+/* DON'T do this globally:
+* { height: auto; }
+*/
+
 @font-face {
   font-family: "Smooch Sans";
   src: url("../fonts/SmoochSans-VariableFont_wght.woff2") format("woff2");
-  font-weight: 550;
+  font-weight: 100 900; /* variable range */
   font-style: normal;
   font-display: swap;
 }
+
+body {
+  background: beige;
+  font-family: "Smooch Sans", system-ui, sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ===== Header / Toolbar ===== */
+/* HEADER CONTAINER */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 1000;
 
-  background: rgba(245, 243, 238, 0.75); /* semi-transparent */
+  background: rgba(245, 243, 238, 0.85);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+
+  display: flex;
+  flex-direction: column;   /* 👈 THIS is the key */
 }
 
-.header-inner {
+/* TOP ROW (LOGO) */
+.header-top {
   height: 64px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+}
 
-  position: relative;
+/* BOTTOM ROW (NAV) */
+.header-bottom {
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+/* LOGO */
+.toolbar-logo {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  font-size: 1.2rem;
+}
+
+/* NAV */
+.toolbar-nav {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.toolbar-link {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  opacity: 0.9;
+}
+
+.toolbar-link:hover {
+  opacity: 0.6;
 }
