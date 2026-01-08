@@ -10,16 +10,16 @@
 */
 
 @font-face {
-  font-family: "Smooch Sans";
-  src: url("../fonts/SmoochSans-VariableFont_wght.woff2") format("woff2");
+  font-family: "New Times Roman";
+  src: url("../fonts/times.woff2") format("woff2");
   font-weight: 100 900; /* variable range */
   font-style: normal;
   font-display: swap;
 }
 
 body {
-  background: beige;
-  font-family: "Smooch Sans", system-ui, sans-serif;
+  background: #D8EDFC;
+  font-family: "New Times Roman", system-ui, sans-serif;
 
   display: flex;
   flex-direction: column;
@@ -33,7 +33,7 @@ body {
   top: 0;
   z-index: 1000;
 
-  background: rgba(245, 243, 238, 0.85);
+  background: #D8EDFC;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 
@@ -72,6 +72,12 @@ body {
   font-size: 1.2rem;
 }
 
+.toolbar-logo img {
+  height: 170px;        /* 👈 control size here */
+  width: auto;         /* keep proportions */
+  display: block;
+}
+
 /* NAV */
 .toolbar-nav {
   display: flex;
@@ -88,4 +94,23 @@ body {
 
 .toolbar-link:hover {
   opacity: 0.6;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.gallery img {
+  width: 100%;
+  height: 500px;          /* forces same height */
+  object-fit: cover;     /* crops nicely */
+  border-radius: 12px;
 }
