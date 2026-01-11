@@ -5,6 +5,10 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
+@app.route("/health")
+def health():
+    return {"status": "ok"}, 200
+
 @app.route('/contact')
 def contact():
     return render_template("contact.html")
@@ -16,3 +20,7 @@ def gallery():
 @app.route('/base')
 def base():
     return render_template("base.html")
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=False)
