@@ -37,4 +37,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ghcr.io/<user>/<repo>:${{ github.sha }}
+            ghcr.io/<user>/<repo>:latest
