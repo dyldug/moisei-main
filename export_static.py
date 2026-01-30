@@ -1,49 +1,58 @@
 # export_static.py
 from __future__ import annotations
 
-import os
 import re
 import shutil
 from pathlib import Path
 
 from flask import render_template
 
-# Import your Flask app instance
-# Assumes main.py contains `app = Flask(__name__)`
-from main import app  # noqa: E402
+from main import app  # your Flask app instance
 
 
-PAGES = [
-    # (template_name, output_filename)
-    ("index.html", "index.html"),
-    ("contact.html", "contact.html"),
-    ("gallery.html", "gallery.html"),
+# Map routes -> output HTML filenames
+ROUTES = [
+    ("/", "index.html", "index.html"),
+    ("/contact", "contact.html", "contact.html"),
+    ("/gallery", "gallery.html", "gallery.html"),
+    # Do NOT export base.html; it's a layout template, not a page
 ]
 
-OUT_DIR = Path("site")  # build output (we'll deploy this)
+OUT_DIR = Path("site")
 STATIC_SRC = Path("static")
 STATIC_DST = OUT_DIR / "static"
 
 
-def _rewrite_asset_paths(html: str) -> str:
+def rewrite_for_github_pages(html: str) -> str:
     """
-    GitHub Pages project sites live under /<repo>/.
-    Absolute paths like /static/... break, so rewrite them to relative static/...
+    GitHub Pages project sites live under /<repo>/ (e.g. /moisei-main/).
+    Absolute URLs like /static/... or /contact break. Convert to relative.
     """
-    html = re.sub(r'(["\'])/static/', r"\1static/", html)  # href="/static/..." -> "static/..."
-    html = re.sub(r'(["\'])/favicon\.ico', r"\1favicon.ico", html)
+    # Assets: /static/... -> static/...
+    html = re.sub(r'(["\'])/static/', r"\1static/", html)
+
+    # Internal links: href="/contact" -> href="contact.html"
+    html = re.sub(r'href="/contact"\b', 'href="contact.html"', html)
+    html = re.sub(r'href="/gallery"\b', 'href="gallery.html"', html)
+    html = re.sub(r'href="/"\b', 'href="index.html"', html)
+
+    # If you have other absolute href="/something", we can add more rewrites.
     return html
 
 
-def build() -> None:
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+def clean_dir(path: Path) -> None:
+    if path.exists():
+        for item in path.iterdir():
+            if item.is_dir():
+                shutil.rmtree(item)
+            else:
+                item.unlink()
+    else:
+        path.mkdir(parents=True, exist_ok=True)
 
-    # Clean output except keep folder itself
-    for item in OUT_DIR.iterdir():
-        if item.is_dir():
-            shutil.rmtree(item)
-        else:
-            item.unlink()
+
+def build() -> None:
+    clean_dir(OUT_DIR)
 
     # Copy static assets
     if STATIC_SRC.exists():
@@ -51,19 +60,17 @@ def build() -> None:
     else:
         print("WARN: ./static not found; skipping copy")
 
-    # Disable Jekyll (recommended)
+    # Disable Jekyll to avoid surprises
     (OUT_DIR / ".nojekyll").write_text("", encoding="utf-8")
 
-    # Render templates
     with app.app_context():
-        for template_name, out_name in PAGES:
-            # Provide a request context so url_for works if used
-            with app.test_request_context("/"):
+        for route, template_name, out_name in ROUTES:
+            with app.test_request_context(route):
                 rendered = render_template(template_name)
 
-            rendered = _rewrite_asset_paths(rendered)
+            rendered = rewrite_for_github_pages(rendered)
             (OUT_DIR / out_name).write_text(rendered, encoding="utf-8")
-            print(f"Rendered {template_name} -> {OUT_DIR/out_name}")
+            print(f"Rendered {route} ({template_name}) -> {OUT_DIR/out_name}")
 
     print("Static export complete.")
 
