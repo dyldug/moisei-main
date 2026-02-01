@@ -73,7 +73,7 @@ body {
 }
 
 .toolbar-logo img {
-  height: 120px;        /* 👈 control size here */
+  height: 100px;        /* 👈 control size here */
   width: auto;         /* keep proportions */
   display: block;
 }
