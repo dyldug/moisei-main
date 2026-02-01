@@ -45,7 +45,7 @@ body {
 
 /* TOP ROW (LOGO) */
 .header-top {
-  height: 64px;
+  height: 100px;
 
   display: flex;
   align-items: center;
@@ -73,7 +73,7 @@ body {
 }
 
 .toolbar-logo img {
-  height: 230x;        /* 👈 control size here */
+  height: 120px;        /* 👈 control size here */
   width: auto;         /* keep proportions */
   display: block;
 }
